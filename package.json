@@ -39,7 +39,10 @@
       "optional": true
     }
   },
-  "keywords": ["binance", "rate limit"],
+  "keywords": [
+    "binance",
+    "rate limit"
+  ],
   "engines": {
     "node": ">=16"
   },
