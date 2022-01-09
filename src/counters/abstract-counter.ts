@@ -7,7 +7,7 @@ export abstract class AbstractCounter {
   protected _interval: number;
   protected _usage: Map<number, number> = new Map();
 
-  constructor(rule: IBinanceRateLimitRule, safetyBuffer = 0) {
+  constructor(rule: IBinanceRateLimitRule, safetyBuffer: number) {
     this._rule = rule;
     this._limit = rule.limit - safetyBuffer;
     this._interval = LimitConverter.asMilliseconds(rule);
@@ -58,7 +58,7 @@ export abstract class AbstractCounter {
   /**
    * Update the counter after request completed or errored
    */
-  public abstract completeRequest(serverDate?: number, serverUsage?: number, usage?: number): void;
+  public abstract completeRequest(usage?: number, serverDate?: number, serverUsage?: number): void;
 
   protected _collectGarbage(): void {
     const previousWindow = this._getWindow(Date.now()) - 1;

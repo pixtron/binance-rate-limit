@@ -3,7 +3,7 @@ import { AbstractCounter } from './abstract-counter';
 export class WeightCounter extends AbstractCounter {
   protected _pendingUsage = 0; // usage currently pending in requests
 
-  public mayDispatchRequest(usage = 1): number {
+  public mayDispatchRequest(usage: number): number {
     const windowId = this._getWindow(Date.now());
     const usedAfter = this._getUsageAfterRequest(windowId, usage);
 
@@ -14,7 +14,7 @@ export class WeightCounter extends AbstractCounter {
     this._pendingUsage += usage;
   }
 
-  public completeRequest(serverDate?: number, serverUsage?: number, usage = 1): void {
+  public completeRequest(usage: number, serverDate?: number, serverUsage?: number): void {
     this._pendingUsage -= usage;
 
     if (!serverDate || !serverUsage) return;

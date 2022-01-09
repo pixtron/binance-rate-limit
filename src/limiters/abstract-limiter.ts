@@ -101,9 +101,9 @@ export abstract class AbstractLimiter extends EventEmitter {
     const counters = this._requestCounters(method, endpoint, params, uid);
     for (const { counter, config, rule, weight } of counters) {
       counter.completeRequest(
+        weight,
         this._getServerHeaderDate(headers),
         this._getUsageFromHeaders(rule, headers, config.headerNameTemplate),
-        weight
       );
     }
 
@@ -126,7 +126,7 @@ export abstract class AbstractLimiter extends EventEmitter {
   protected *_requestCounters(
     method: TMethod,
     endpoint: string,
-    params: TRequestParams = {},
+    params: TRequestParams,
     uid: string
   ): IterableIterator<{
     counter: AbstractCounter,
@@ -145,7 +145,7 @@ export abstract class AbstractLimiter extends EventEmitter {
   protected *_requestRules(
     method: TMethod,
     endpoint: string,
-    params: TRequestParams = {}
+    params: TRequestParams
   ): IterableIterator<{
     rule: IBinanceRateLimitRule,
     config: ILimitConfig,
@@ -217,7 +217,7 @@ export abstract class AbstractLimiter extends EventEmitter {
     config: ILimitConfig,
     method: TMethod,
     endpoint: string,
-    params: TRequestParams = {}
+    params: TRequestParams
   ): number | null {
     let weight: number;
 

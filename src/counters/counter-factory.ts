@@ -4,7 +4,7 @@ import { AbstractCounter, RequestCounter, WeightCounter } from './index';
 
 export const counterFactory = function(
   limit: IBinanceRateLimitRule,
-  safetyBuffer = 0
+  safetyBuffer: number
 ): AbstractCounter {
   switch (limit.rateLimitType) {
     case EBinanceRateLimitType.REQUEST_WEIGHT:
