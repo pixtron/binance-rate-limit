@@ -153,6 +153,7 @@ export abstract class AbstractLimiter extends EventEmitter {
       if (weight !== null) {
         const rules = this._mapedLimitRules.get(type);
 
+        /* istanbul ignore next */
         if (!rules) continue;
 
         for (const rule of rules) yield { rule, config, type, weight };
@@ -232,10 +233,12 @@ export abstract class AbstractLimiter extends EventEmitter {
       case 'number':
         weight = weightConfig;
       break;
+      /* istanbul ignore next */
       default:
         weight = Number(weightConfig);
     }
 
+    /* istanbul ignore next */
     if (isNaN(weight)) {
       throw new TypeError(`Invalid endpoint config for '${method} ${endpoint}'`);
     }
