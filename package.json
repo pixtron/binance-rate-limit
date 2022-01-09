@@ -9,7 +9,7 @@
     "tsc": "tsc -d",
     "clean": "rm -rf ./dist",
     "prepack": "npm run build",
-    "build": "npm run clean && npm run lint && npm run tsc",
+    "build": "npm run clean && npm run lint && npm run tsc && npm run test",
     "lint": "eslint . --ext .ts --report-unused-disable-directives",
     "test": "jest --coverage"
   },
