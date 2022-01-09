@@ -61,9 +61,9 @@ export abstract class AbstractCounter {
   public abstract completeRequest(serverDate?: number, serverUsage?: number, usage?: number): void;
 
   protected _collectGarbage(): void {
-    const currentWindow = this._getWindow(Date.now());
+    const previousWindow = this._getWindow(Date.now()) - 1;
     for (const key of this._usage.keys()) {
-      if (key < currentWindow) this._usage.delete(key);
+      if (key < previousWindow) this._usage.delete(key);
     }
   }
 
