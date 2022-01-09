@@ -46,6 +46,8 @@ export abstract class AbstractLimiter extends EventEmitter {
   }
 
   public setRateLimitRules(limits: IBinanceRateLimitRule[]): void {
+    this._mapedLimitRules = new Map();
+
     for (const limit of limits) {
       if (this._config.has(limit.rateLimitType)) {
         const rules = this._mapedLimitRules.get(limit.rateLimitType) || [];
