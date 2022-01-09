@@ -30,10 +30,16 @@ export class RetryTimeout extends EventEmitter {
   public backoff(until: Date | number): void {
     if (typeof until === 'number') until = new Date(Date.now() + until);
 
+    if (this._active === false && until < new Date()) {
+      return this._triggerElapsed();
+    }
+
     if (
+      this._active === false
+      ||
       (!this.lowest && until > this._ends)
       ||
-      (this.lowest && (until < this._ends || this._ends < new Date()))
+      (this.lowest && (until < this._ends))
     ) {
       this._active = true;
       this._ends = until;
@@ -42,7 +48,7 @@ export class RetryTimeout extends EventEmitter {
 
       const t = until.getTime() - Date.now();
 
-      if (t >= 0) {
+      if (t >= 1) {
         this._timer = setTimeout(this._triggerElapsed.bind(this), t);
         this._timer.unref();
       } else {
