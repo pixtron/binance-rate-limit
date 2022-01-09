@@ -109,11 +109,11 @@ export abstract class AbstractLimiter extends EventEmitter {
       // 418: ip has failed to back off after a 418 and has been banned
       // 429: ip exceeded a rate limit.
       const retryIn = Number(headers['retry-after']) * 1e3;
-      this._retryTimeout.backoff(retryIn);
-      this.emit('retry-in', retryIn);
       this._retryTimeout.once('elapsed', () => {
         this.emit('retry-elapsed');
       });
+      this.emit('retry-in', retryIn);
+      this._retryTimeout.backoff(retryIn);
     }
   }
 

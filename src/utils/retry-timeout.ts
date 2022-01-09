@@ -41,7 +41,8 @@ export class RetryTimeout extends EventEmitter {
       this._clearTimer();
 
       const t = until.getTime() - Date.now();
-      if (t <= 0) {
+
+      if (t >= 0) {
         this._timer = setTimeout(this._triggerElapsed.bind(this), t);
         this._timer.unref();
       } else {
