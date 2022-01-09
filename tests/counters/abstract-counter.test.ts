@@ -16,7 +16,8 @@ class CounterImplementation extends AbstractCounter {
     this._usage.set(windowId, usedAfter);
   }
 
-  completeRequest(): void {};
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  completeRequest(): void {}
 }
 
 const defaultRule: IBinanceRateLimitRule = {

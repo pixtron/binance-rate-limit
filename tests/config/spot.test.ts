@@ -16,13 +16,13 @@ describe('requestWeights', () => {
 
       if (typeof fn === 'function') {
         expect(fn({})).toEqual(1);
-        expect(fn({limit: 5})).toEqual(1);
-        expect(fn({limit: 10})).toEqual(1);
-        expect(fn({limit: 20})).toEqual(1);
-        expect(fn({limit: 100})).toEqual(1);
-        expect(fn({limit: 500})).toEqual(5);
-        expect(fn({limit: 1000})).toEqual(10);
-        expect(fn({limit: 5000})).toEqual(50);
+        expect(fn({ limit: 5 })).toEqual(1);
+        expect(fn({ limit: 10 })).toEqual(1);
+        expect(fn({ limit: 20 })).toEqual(1);
+        expect(fn({ limit: 100 })).toEqual(1);
+        expect(fn({ limit: 500 })).toEqual(5);
+        expect(fn({ limit: 1000 })).toEqual(10);
+        expect(fn({ limit: 5000 })).toEqual(50);
       }
     });
   });
@@ -35,7 +35,7 @@ describe('requestWeights', () => {
 
       if (typeof fn === 'function') {
         expect(fn({})).toEqual(40);
-        expect(fn({symbol: 'BTCUSDT'})).toEqual(1);
+        expect(fn({ symbol: 'BTCUSDT' })).toEqual(1);
       }
     });
   });
@@ -48,7 +48,7 @@ describe('requestWeights', () => {
 
       if (typeof fn === 'function') {
         expect(fn({})).toEqual(2);
-        expect(fn({symbol: 'BTCUSDT'})).toEqual(1);
+        expect(fn({ symbol: 'BTCUSDT' })).toEqual(1);
       }
     });
   });
@@ -61,7 +61,7 @@ describe('requestWeights', () => {
 
       if (typeof fn === 'function') {
         expect(fn({})).toEqual(2);
-        expect(fn({symbol: 'BTCUSDT'})).toEqual(1);
+        expect(fn({ symbol: 'BTCUSDT' })).toEqual(1);
       }
     });
   });
@@ -74,7 +74,7 @@ describe('requestWeights', () => {
 
       if (typeof fn === 'function') {
         expect(fn({})).toEqual(40);
-        expect(fn({symbol: 'BTCUSDT'})).toEqual(3);
+        expect(fn({ symbol: 'BTCUSDT' })).toEqual(3);
       }
     });
   });

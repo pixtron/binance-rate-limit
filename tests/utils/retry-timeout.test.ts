@@ -1,5 +1,9 @@
 import { RetryTimeout } from '../../src/utils/index';
 
+
+// eslint-disable-next-line @typescript-eslint/no-empty-function
+const noop = () => {}
+
 describe('RetryTimeout', () => {
   beforeEach(() => {
     jest
@@ -10,7 +14,7 @@ describe('RetryTimeout', () => {
   describe('reset', () => {
     it('resets a running timeout without emitting', () => {
       const timeout = new RetryTimeout();
-      const listener = jest.fn(() => { });
+      const listener = jest.fn(noop);
       timeout.once('elapsed', listener);
 
       timeout.backoff(new Date('1970-01-01T00:02:00.000Z'));
@@ -32,7 +36,7 @@ describe('RetryTimeout', () => {
   describe('retryAfter', () => {
     it('returns the correct date', () => {
       const timeout = new RetryTimeout();
-      const listener = jest.fn(() => { });
+      const listener = jest.fn(noop);
       timeout.once('elapsed', listener);
 
       timeout.backoff(new Date('1970-01-01T00:02:00.000Z'));
@@ -43,7 +47,7 @@ describe('RetryTimeout', () => {
   describe('backoff', () => {
     it('emits elapsed when timeout is reached', () => {
       const timeout = new RetryTimeout();
-      const listener = jest.fn(() => { });
+      const listener = jest.fn(noop);
       timeout.once('elapsed', listener);
 
       timeout.backoff(new Date('1970-01-01T00:02:00.000Z'));
@@ -59,7 +63,7 @@ describe('RetryTimeout', () => {
 
     it('increases timeout when a second higher timeout is passed', () => {
       const timeout = new RetryTimeout();
-      const listener = jest.fn(() => { });
+      const listener = jest.fn(noop);
       timeout.once('elapsed', listener);
 
       timeout.backoff(new Date('1970-01-01T00:02:00.000Z'));
@@ -80,7 +84,7 @@ describe('RetryTimeout', () => {
 
     it('does not increase timeout when a second lower timeout is passed', () => {
       const timeout = new RetryTimeout();
-      const listener = jest.fn(() => { });
+      const listener = jest.fn(noop);
       timeout.once('elapsed', listener);
 
       timeout.backoff(new Date('1970-01-01T00:02:00.000Z'));
@@ -100,7 +104,7 @@ describe('RetryTimeout', () => {
 
     it('immediately emits elapsed if date is in past', () => {
       const timeout = new RetryTimeout();
-      const listener = jest.fn(() => { });
+      const listener = jest.fn(noop);
       timeout.once('elapsed', listener);
 
       timeout.backoff(new Date('1970-01-01T00:00:59.000Z'));
@@ -113,7 +117,7 @@ describe('RetryTimeout', () => {
   describe('backoff lowest', () => {
     it('emits elapsed when timeout is reached', () => {
       const timeout = new RetryTimeout(true);
-      const listener = jest.fn(() => { });
+      const listener = jest.fn(noop);
       timeout.once('elapsed', listener);
 
       timeout.backoff(new Date('1970-01-01T00:02:00.000Z'));
@@ -129,7 +133,7 @@ describe('RetryTimeout', () => {
 
     it('does not decrease timeout when a second higher timeout is passed', () => {
       const timeout = new RetryTimeout(true);
-      const listener = jest.fn(() => { });
+      const listener = jest.fn(noop);
       timeout.once('elapsed', listener);
 
       timeout.backoff(new Date('1970-01-01T00:02:00.000Z'));
@@ -146,7 +150,7 @@ describe('RetryTimeout', () => {
 
     it('decreases timeout when a second lower timeout is passed', () => {
       const timeout = new RetryTimeout(true);
-      const listener = jest.fn(() => { });
+      const listener = jest.fn(noop);
       timeout.once('elapsed', listener);
 
       timeout.backoff(new Date('1970-01-01T00:02:00.000Z'));
@@ -166,7 +170,7 @@ describe('RetryTimeout', () => {
 
     it('immediately emits elapsed if date is in past', () => {
       const timeout = new RetryTimeout(true);
-      const listener = jest.fn(() => { });
+      const listener = jest.fn(noop);
       timeout.once('elapsed', listener);
 
       timeout.backoff(new Date('1970-01-01T00:00:59.000Z'));
@@ -177,7 +181,7 @@ describe('RetryTimeout', () => {
 
     it('immediately emits elapsed if date is in past and there is an active timeout', () => {
       const timeout = new RetryTimeout(true);
-      const listener = jest.fn(() => { });
+      const listener = jest.fn(noop);
       timeout.once('elapsed', listener);
 
       timeout.backoff(new Date('1970-01-01T00:02:00.000Z'));

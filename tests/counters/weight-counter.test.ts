@@ -5,7 +5,7 @@ import {
   WeightCounter
 } from '../../src/index';
 
-const createCounter = (buffer: number = 0, rule?: IBinanceRateLimitRule): WeightCounter => {
+const createCounter = (buffer = 0, rule?: IBinanceRateLimitRule): WeightCounter => {
   if (!rule) {
     rule = {
       rateLimitType: EBinanceRateLimitType.REQUEST_WEIGHT,
