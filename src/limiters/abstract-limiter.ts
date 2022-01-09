@@ -73,6 +73,8 @@ export abstract class AbstractLimiter extends EventEmitter {
     let dispatchIn = this._retryTimeout.retryAfterMs;
     let counters: ReturnType<typeof this._requestCounters>;
 
+    endpoint = this._normalizeEndpoint(endpoint);
+
     counters = this._requestCounters(method, endpoint, params, uid);
     for (const { counter, weight } of counters) {
       const t = counter.mayDispatchRequest(weight);
@@ -93,6 +95,8 @@ export abstract class AbstractLimiter extends EventEmitter {
     { statusCode, headers }: IResponse,
     { method, endpoint, params = {}, uid = '' }: IRequest
   ): void {
+    endpoint = this._normalizeEndpoint(endpoint);
+
     // update usage from headers
     const counters = this._requestCounters(method, endpoint, params, uid);
     for (const { counter, config, rule, weight } of counters) {

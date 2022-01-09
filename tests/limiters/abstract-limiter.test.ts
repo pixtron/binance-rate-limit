@@ -19,6 +19,52 @@ describe('AbstractCounter', () => {
       .setSystemTime(new Date('1970-01-01T00:00:00.000Z').getTime());
   });
 
+  describe('normalize endpoints', () => {
+    it('accepts endpoints without leading slash', () => {
+      const limiter = new LimiterImplementation();
+      const req: IRequest = { method: 'GET', endpoint: 'api/v3/ticker/24hr' };
+      const res: IResponse = { statusCode: 200, headers: {
+        date: 'Thu, 01 Jan 1970 00:00:01 GMT',
+        'x-mbx-used-weight-1m': '40',
+      } };
+      let retryIn: number;
+
+      retryIn = limiter.mayDispatchRequest(req);
+      expect(retryIn).toEqual(0);
+      retryIn = limiter.mayDispatchRequest(req);
+      expect(retryIn).toEqual(60e3);
+
+      limiter.completeRequest(res, req);
+
+      expect(limiter.currentUsage).toEqual({
+        'RAW_REQUESTS.5m': 1,
+        'REQUEST_WEIGHT.1m': 40,
+      });
+    });
+
+    it('accepts endpoints with trailing slash', () => {
+      const limiter = new LimiterImplementation();
+      const req: IRequest = { method: 'GET', endpoint: '/api/v3/ticker/24hr/' };
+      const res: IResponse = { statusCode: 200, headers: {
+        date: 'Thu, 01 Jan 1970 00:00:01 GMT',
+        'x-mbx-used-weight-1m': '40',
+      } };
+      let retryIn: number;
+
+      retryIn = limiter.mayDispatchRequest(req);
+      expect(retryIn).toEqual(0);
+      retryIn = limiter.mayDispatchRequest(req);
+      expect(retryIn).toEqual(60e3);
+
+      limiter.completeRequest(res, req);
+
+      expect(limiter.currentUsage).toEqual({
+        'RAW_REQUESTS.5m': 1,
+        'REQUEST_WEIGHT.1m': 40,
+      });
+    });
+  });
+
   describe('REQUEST_WEIGHT', () => {
     it('allows a request when it does not violate rate limit', () => {
       const limiter = new LimiterImplementation();
