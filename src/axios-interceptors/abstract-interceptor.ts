@@ -273,7 +273,7 @@ export abstract class AbstractAxiosInterceptor<L extends AbstractLimiter> {
   protected _tryGetUidFromRequestHeaders(
     headers?: AxiosRequestHeaders
   ): string | undefined {
-    const apiKey = getHeaderValue('x-mx-apikey', headers);
+    const apiKey = getHeaderValue('x-mbx-apikey', headers);
 
     if (!apiKey) return;
 
