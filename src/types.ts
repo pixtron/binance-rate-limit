@@ -15,11 +15,6 @@ export enum ETrackingType {
   UID,
 }
 
-export interface IAxiosInterceptorOptions {
-  maxConcurrentRequests: number,
-  maxQueueSize: number,
-}
-
 export interface IBinanceRateLimitRule {
   rateLimitType: EBinanceRateLimitType,
   interval: EBinanceRateLimitInterval,
