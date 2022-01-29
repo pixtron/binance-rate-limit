@@ -12,7 +12,7 @@ class LimiterImplementation extends AbstractLimiter {
   protected _config = limitConfigs;
 }
 
-describe('AbstractCounter', () => {
+describe('AbstractLimiter', () => {
   beforeEach(() => {
     jest
       .useFakeTimers()
