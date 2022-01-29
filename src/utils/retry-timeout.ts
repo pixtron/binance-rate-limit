@@ -14,11 +14,11 @@ export class RetryTimeout extends EventEmitter {
   }
 
   public get retryAfterMs(): number {
-    return Math.max(this._ends.getTime() - Date.now() + 1, 0);
+    return Math.max(this._ends.getTime() - Date.now(), 0);
   }
 
   public get retryAfter(): Date {
-    return new Date(this._ends.getTime() + 1);
+    return new Date(this._ends.getTime());
   }
 
   public reset(): void {
@@ -30,7 +30,7 @@ export class RetryTimeout extends EventEmitter {
   public backoff(until: Date | number): void {
     if (typeof until === 'number') until = new Date(Date.now() + until);
 
-    if (this._active === false && until < new Date()) {
+    if (this._active === false && until <= new Date()) {
       return this._triggerElapsed();
     }
 
@@ -59,8 +59,8 @@ export class RetryTimeout extends EventEmitter {
 
   protected _triggerElapsed(): void {
     this._active = false;
-    this.emit('elapsed');
     this._clearTimer();
+    this.emit('elapsed');
   }
 
   protected _clearTimer(): void {

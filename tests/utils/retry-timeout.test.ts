@@ -40,7 +40,7 @@ describe('RetryTimeout', () => {
       timeout.once('elapsed', listener);
 
       timeout.backoff(new Date('1970-01-01T00:02:00.000Z'));
-      expect(timeout.retryAfter.getTime()).toEqual(120001);
+      expect(timeout.retryAfter.getTime()).toEqual(120000);
     });
   });
 

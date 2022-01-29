@@ -135,13 +135,13 @@ describe('AbstractCounter', () => {
       limiter.completeRequest(res, req);
 
       retryIn = limiter.mayDispatchRequest(req);
-      expect(retryIn).toEqual(4001);
+      expect(retryIn).toEqual(4000);
 
       jest.advanceTimersByTime(2000);
       retryIn = limiter.mayDispatchRequest(req);
-      expect(retryIn).toEqual(2001);
+      expect(retryIn).toEqual(2000);
 
-      jest.advanceTimersByTime(2001);
+      jest.advanceTimersByTime(2000);
       retryIn = limiter.mayDispatchRequest(req);
       expect(retryIn).toEqual(0);
     });
@@ -162,9 +162,9 @@ describe('AbstractCounter', () => {
       limiter.completeRequest(res, req);
 
       retryIn = limiter.mayDispatchRequest(req);
-      expect(retryIn).toEqual(4001);
+      expect(retryIn).toEqual(4000);
 
-      jest.advanceTimersByTime(4001);
+      jest.advanceTimersByTime(4000);
 
       retryIn = limiter.mayDispatchRequest(req);
       expect(retryIn).toEqual(0);
