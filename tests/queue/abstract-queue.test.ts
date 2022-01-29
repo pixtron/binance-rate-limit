@@ -31,9 +31,10 @@ const mockRequestFactory = (config: Partial<IQueueRequestConfig> = {}, response:
   config: IQueueRequestConfig,
   dispatchFn: TQueueDispatchFn,
 } => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const dispatchFn = jest.fn(async(_: IQueueRequestConfig): Promise<{
     response: IResponse,
-    data: any
+    data: any // eslint-disable-line @typescript-eslint/no-explicit-any
   }> => {
     if (!response.headers) response.headers = {};
 
@@ -47,7 +48,7 @@ const mockRequestFactory = (config: Partial<IQueueRequestConfig> = {}, response:
         },
 
       },
-      data: {res: 'ok'}
+      data: { res: 'ok' }
     }
   });
 
@@ -79,8 +80,8 @@ describe('AbstractQueue', () => {
     it('queues requests exceeding rate limit', async () => {
       const queue = new QueueImplementation();
       const req1 = mockRequestFactory();
-      const req2 = mockRequestFactory({ endpoint: '/api/v3/ticker/24hr'}, {headers: {'X-MBX-USED-WEIGHT-1M': '50'}});
-      const req3 = mockRequestFactory({ endpoint: '/api/v3/ping'}, {headers: {'X-MBX-USED-WEIGHT-1M': '1'}});
+      const req2 = mockRequestFactory({ endpoint: '/api/v3/ticker/24hr' }, { headers: { 'X-MBX-USED-WEIGHT-1M': '50' } });
+      const req3 = mockRequestFactory({ endpoint: '/api/v3/ping' }, { headers: { 'X-MBX-USED-WEIGHT-1M': '1' } });
 
       const p1 = queue.enqueue(req1.config, req1.dispatchFn);
       const p2 = queue.enqueue(req2.config, req2.dispatchFn);
@@ -101,8 +102,8 @@ describe('AbstractQueue', () => {
     it('throws when max queue size is exceeded', async () => {
       const queue = new QueueImplementation();
       const req1 = mockRequestFactory();
-      const req2 = mockRequestFactory({ endpoint: '/api/v3/ticker/24hr'}, {headers: {'X-MBX-USED-WEIGHT-1M': '50'}});
-      const req3 = mockRequestFactory({ endpoint: '/api/v3/ping'}, {headers: {'X-MBX-USED-WEIGHT-1M': '1'}});
+      const req2 = mockRequestFactory({ endpoint: '/api/v3/ticker/24hr' }, { headers: { 'X-MBX-USED-WEIGHT-1M': '50' } });
+      const req3 = mockRequestFactory({ endpoint: '/api/v3/ping' }, { headers: { 'X-MBX-USED-WEIGHT-1M': '1' } });
 
       const p1 = queue.enqueue(req1.config, req1.dispatchFn);
       const p2 = queue.enqueue(req2.config, req2.dispatchFn);
@@ -129,8 +130,8 @@ describe('AbstractQueue', () => {
     it('throws retry in error when skipQueue request exceeds rate limit', async () => {
       const queue = new QueueImplementation();
       const req1 = mockRequestFactory();
-      const req2 = mockRequestFactory({ endpoint: '/api/v3/ticker/24hr'}, {headers: {'X-MBX-USED-WEIGHT-1M': '50'}});
-      const req3 = mockRequestFactory({ endpoint: '/api/v3/ping', skipQueue: true}, {headers: {'X-MBX-USED-WEIGHT-1M': '1'}});
+      const req2 = mockRequestFactory({ endpoint: '/api/v3/ticker/24hr' }, { headers: { 'X-MBX-USED-WEIGHT-1M': '50' } });
+      const req3 = mockRequestFactory({ endpoint: '/api/v3/ping', skipQueue: true }, { headers: { 'X-MBX-USED-WEIGHT-1M': '1' } });
 
       const p1 = queue.enqueue(req1.config, req1.dispatchFn);
       const p2 = queue.enqueue(req2.config, req2.dispatchFn);
@@ -153,8 +154,8 @@ describe('AbstractQueue', () => {
 
     it('throws max concurrent requests error when skipQueue exceeds max concurrent requests', async () => {
       const queue = new QueueImplementation();
-      const req1 = mockRequestFactory({ endpoint: '/api/v3/ping'}, {headers: {'X-MBX-USED-WEIGHT-1M': '1'}});
-      const req2 = mockRequestFactory({ endpoint: '/api/v3/ping', skipQueue: true}, {headers: {'X-MBX-USED-WEIGHT-1M': '1'}});
+      const req1 = mockRequestFactory({ endpoint: '/api/v3/ping' }, { headers: { 'X-MBX-USED-WEIGHT-1M': '1' } });
+      const req2 = mockRequestFactory({ endpoint: '/api/v3/ping', skipQueue: true }, { headers: { 'X-MBX-USED-WEIGHT-1M': '1' } });
 
       const p1 = queue.enqueue(req1.config, req1.dispatchFn);
       const p2 = queue.enqueue(req1.config, req1.dispatchFn);
@@ -169,8 +170,8 @@ describe('AbstractQueue', () => {
     it('throws timeout error when maxQueueUntil elapses', async () => {
       const queue = new QueueImplementation();
       const req1 = mockRequestFactory();
-      const req2 = mockRequestFactory({ endpoint: '/api/v3/ticker/24hr'}, {headers: {'X-MBX-USED-WEIGHT-1M': '50'}});
-      const req3 = mockRequestFactory({ endpoint: '/api/v3/ping', maxQueueUntil: new Date('1970-01-01T00:00:30.000Z')}, {headers: {'X-MBX-USED-WEIGHT-1M': '1'}});
+      const req2 = mockRequestFactory({ endpoint: '/api/v3/ticker/24hr' }, { headers: { 'X-MBX-USED-WEIGHT-1M': '50' } });
+      const req3 = mockRequestFactory({ endpoint: '/api/v3/ping', maxQueueUntil: new Date('1970-01-01T00:00:30.000Z') }, { headers: { 'X-MBX-USED-WEIGHT-1M': '1' } });
 
       const p1 = queue.enqueue(req1.config, req1.dispatchFn);
       const p2 = queue.enqueue(req2.config, req2.dispatchFn);
@@ -197,12 +198,12 @@ describe('AbstractQueue', () => {
     it('parses axios error responses', async () => {
       const queue = new QueueImplementation();
       const req1 = mockRequestFactory();
-      const req2 = mockRequestFactory({ endpoint: '/api/v3/ticker/24hr'}, {headers: {'X-MBX-USED-WEIGHT-1M': '50'}});
-      const req3 = mockRequestFactory({ endpoint: '/api/v3/ping'}, {headers: {'X-MBX-USED-WEIGHT-1M': '1'}});
+      const req2 = mockRequestFactory({ endpoint: '/api/v3/ticker/24hr' }, { headers: { 'X-MBX-USED-WEIGHT-1M': '50' } });
+      const req3 = mockRequestFactory({ endpoint: '/api/v3/ping' }, { headers: { 'X-MBX-USED-WEIGHT-1M': '1' } });
 
       const err2 = new Error('Request ended with status code 429');
-      (err2 as any).isAxiosError = true;
-      (err2 as any).response = {
+      (err2 as any).isAxiosError = true; // eslint-disable-line @typescript-eslint/no-explicit-any
+      (err2 as any).response = { // eslint-disable-line @typescript-eslint/no-explicit-any
         status: 429,
         headers: {
           'DATE': 'Thu, 01 Jan 1970 00:00:01 GMT',
@@ -250,8 +251,8 @@ describe('AbstractQueue', () => {
         }
       });
       const req1 = mockRequestFactory();
-      const req2 = mockRequestFactory({ endpoint: '/api/v3/ticker/24hr'}, {headers: {'X-MBX-USED-WEIGHT-1M': '50'}});
-      const req3 = mockRequestFactory({ endpoint: '/api/v3/ping'}, {headers: {'X-MBX-USED-WEIGHT-1M': '1'}});
+      const req2 = mockRequestFactory({ endpoint: '/api/v3/ticker/24hr' }, { headers: { 'X-MBX-USED-WEIGHT-1M': '50' } });
+      const req3 = mockRequestFactory({ endpoint: '/api/v3/ping' }, { headers: { 'X-MBX-USED-WEIGHT-1M': '1' } });
 
       const err2 = new Error('Custom response error');
       req2.dispatchFn = jest.fn(async () => { throw err2 });
@@ -283,7 +284,7 @@ describe('AbstractQueue', () => {
   describe('_assignUid', () => {
     it('keeps configured uid', async () => {
       const queue = new QueueImplementation();
-      const req1 = mockRequestFactory({uid: 'customuid'});
+      const req1 = mockRequestFactory({ uid: 'customuid' });
       await queue.enqueue(req1.config, req1.dispatchFn);
 
       expect(req1.dispatchFn).toHaveBeenCalledWith(req1.config);
@@ -291,7 +292,7 @@ describe('AbstractQueue', () => {
 
     it('gets uid alias from header', async () => {
       const queue = new QueueImplementation();
-      const req1 = mockRequestFactory({headers: {'X-MBX-APIKEY': 'mykey'}});
+      const req1 = mockRequestFactory({ headers: { 'X-MBX-APIKEY': 'mykey' } });
       await queue.enqueue(req1.config, req1.dispatchFn);
 
       expect(req1.dispatchFn).toHaveBeenCalledWith({
@@ -305,8 +306,8 @@ describe('AbstractQueue', () => {
     it('empties queue', async () => {
       const queue = new QueueImplementation();
       const req1 = mockRequestFactory();
-      const req2 = mockRequestFactory({ endpoint: '/api/v3/ticker/24hr'}, {headers: {'X-MBX-USED-WEIGHT-1M': '50'}});
-      const req3 = mockRequestFactory({ endpoint: '/api/v3/ping'}, {headers: {'X-MBX-USED-WEIGHT-1M': '1'}});
+      const req2 = mockRequestFactory({ endpoint: '/api/v3/ticker/24hr' }, { headers: { 'X-MBX-USED-WEIGHT-1M': '50' } });
+      const req3 = mockRequestFactory({ endpoint: '/api/v3/ping' }, { headers: { 'X-MBX-USED-WEIGHT-1M': '1' } });
 
       const p1 = queue.enqueue(req1.config, req1.dispatchFn);
       const p2 = queue.enqueue(req2.config, req2.dispatchFn);

@@ -182,7 +182,7 @@ export abstract class AbstractQueue<
   protected _assignUid(
     config: RC,
   ): RC {
-    const newConfig = {...config}
+    const newConfig = { ...config }
     if (newConfig.uid) return newConfig;
 
     const apiKey = getHeaderValue('x-mbx-apikey', newConfig.headers);

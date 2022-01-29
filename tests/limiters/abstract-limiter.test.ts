@@ -7,6 +7,9 @@ import {
 import { exchangeInfoRateLimit } from '../__mocks/mock-config';
 import { LimiterImplementation } from '../__mocks/mock-limiter';
 
+// eslint-disable-next-line @typescript-eslint/no-empty-function
+const noop = () => {}
+
 describe('AbstractLimiter', () => {
   beforeEach(() => {
     jest
@@ -145,7 +148,7 @@ describe('AbstractLimiter', () => {
       const limiter = new LimiterImplementation();
       const req: IRequest = { method: 'GET', endpoint: '/api/v3/ticker/24hr' };
       const res: IResponse = { statusCode: 418, headers: { 'retry-after': '4' } };
-      const listener = jest.fn(() => {});
+      const listener = jest.fn(noop);
       let retryIn: number;
 
       limiter.on('retry-elapsed', listener);
