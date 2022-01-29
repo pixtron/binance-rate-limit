@@ -1,16 +1,11 @@
 import {
-  AbstractLimiter,
   EBinanceRateLimitType,
   IRequest,
   IResponse,
 } from '../../src/index';
 
-import { limitConfigs, mapedRateLimits, exchangeInfoRateLimit } from './mock-config';
-
-class LimiterImplementation extends AbstractLimiter {
-  protected _mapedLimitRules = mapedRateLimits;
-  protected _config = limitConfigs;
-}
+import { exchangeInfoRateLimit } from '../__mocks/mock-config';
+import { LimiterImplementation } from '../__mocks/mock-limiter';
 
 describe('AbstractLimiter', () => {
   beforeEach(() => {

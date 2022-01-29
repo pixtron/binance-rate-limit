@@ -1,8 +1,8 @@
-import { TResponseHeaders } from '../types';
+import { TResponseHeaders, TRequestHeaders } from '../types';
 
 export const getHeaderValue = (
   key: string,
-  headers?: TResponseHeaders
+  headers?: TResponseHeaders | TRequestHeaders
 ): string | undefined => {
   if (!headers) return;
   const hKey = Object.keys(headers).find(k => k.toLowerCase() === key);

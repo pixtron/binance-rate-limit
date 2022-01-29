@@ -119,10 +119,11 @@ export abstract class AbstractLimiter extends EventEmitter {
 
     // if statusCode is 419 || 429, but no retry-after header is set it must be
     // an ORDERS limit, which is handled by counters already
-    if ([418, 429].includes(statusCode) && headers['retry-after']) {
+    const retryAfter = getHeaderValue('retry-after', headers);
+    if ([418, 429].includes(statusCode) && retryAfter) {
       // 418: ip has failed to back off after a 418 and has been banned
       // 429: ip exceeded a rate limit.
-      const retryIn = Number(headers['retry-after']) * 1e3 + 1e3;
+      const retryIn = Number(retryAfter) * 1e3 + 1e3;
 
       if (!this._retryTimeout.listeners('elapsed').find(l => l === this._retryElapsedListener)) {
         this._retryTimeout.once('elapsed', this._retryElapsedListener);
@@ -199,7 +200,8 @@ export abstract class AbstractLimiter extends EventEmitter {
   }
 
   protected _getServerHeaderDate(headers?: TResponseHeaders): number | undefined {
-    if (headers?.date) return Date.parse(headers.date);
+    const value = getHeaderValue('date', headers);
+    if (value) return Date.parse(value);
   }
 
   protected _getUsageFromHeaders(

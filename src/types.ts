@@ -51,6 +51,8 @@ export type TRequestParams = Record<string, any>;
 
 export type TResponseHeaders = Record<string, string>;
 
+export type TRequestHeaders = Record<string, string>;
+
 export type TSafetyBuffers = {
   [key in EBinanceRateLimitType]?: number
 }
