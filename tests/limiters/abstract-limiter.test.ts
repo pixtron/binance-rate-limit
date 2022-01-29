@@ -145,6 +145,31 @@ describe('AbstractCounter', () => {
       retryIn = limiter.mayDispatchRequest(req);
       expect(retryIn).toEqual(0);
     });
+
+    it('only emits retry-elapsed once when server sent 418 and a retry-after twice', () => {
+      const limiter = new LimiterImplementation();
+      const req: IRequest = { method: 'GET', endpoint: '/api/v3/ticker/24hr' };
+      const res: IResponse = { statusCode: 418, headers: { 'retry-after': '4' } };
+      const listener = jest.fn(() => {});
+      let retryIn: number;
+
+      limiter.on('retry-elapsed', listener);
+
+      retryIn = limiter.mayDispatchRequest(req);
+      expect(retryIn).toEqual(0);
+
+      limiter.completeRequest(res, req);
+      limiter.completeRequest(res, req);
+
+      retryIn = limiter.mayDispatchRequest(req);
+      expect(retryIn).toEqual(4001);
+
+      jest.advanceTimersByTime(4001);
+
+      retryIn = limiter.mayDispatchRequest(req);
+      expect(retryIn).toEqual(0);
+      expect(listener).toHaveBeenCalledTimes(1);
+    });
   });
 
   describe('ORDERS', () => {

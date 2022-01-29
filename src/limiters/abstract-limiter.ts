@@ -24,6 +24,14 @@ export abstract class AbstractLimiter extends EventEmitter {
   protected _safetyBuffers: TSafetyBuffers = {};
   protected abstract _mapedLimitRules: TMapedLimitRules;
   protected abstract _config: TLimitConfigs;
+  private _retryElapsedListener: () => void;
+
+  constructor() {
+    super();
+    this._retryElapsedListener = () => {
+      this.emit('retry-elapsed');
+    }
+  }
 
   public get currentUsage(): Record<string, number> {
     const usage: Record<string, number> = {};
@@ -115,10 +123,11 @@ export abstract class AbstractLimiter extends EventEmitter {
       // 418: ip has failed to back off after a 418 and has been banned
       // 429: ip exceeded a rate limit.
       const retryIn = Number(headers['retry-after']) * 1e3;
-      this._retryTimeout.once('elapsed', () => {
-        this.emit('retry-elapsed');
-      });
-      this.emit('retry-in', retryIn);
+
+      if (!this._retryTimeout.listeners('elapsed').find(l => l === this._retryElapsedListener)) {
+        this._retryTimeout.once('elapsed', this._retryElapsedListener);
+      }
+
       this._retryTimeout.backoff(retryIn);
     }
   }
